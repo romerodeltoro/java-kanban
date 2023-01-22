@@ -4,18 +4,18 @@ import java.util.HashMap;
 
 public class Epic extends Task{
 
-    protected HashMap<Integer, Subtask> epicManager = new HashMap<>();
+    protected HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     public Epic(String title, String description) {
         super(title, description);
     }
 
-    public HashMap<Integer, Subtask> getEpicManager() {
-        return epicManager;
+    public HashMap<Integer, Subtask> getSubtasks() {
+        return subtasks;
     }
 
     public void setEpicManager(Integer id, Subtask subtask) {
-        this.epicManager.put(id, subtask);
+        this.subtasks.put(id, subtask);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class Epic extends Task{
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status='" + status + '\'' +
-                ", epicManager=\n\t" + epicManager +
+                ", epicManager=\n\t" + subtasks +
                 '}';
     }
 }

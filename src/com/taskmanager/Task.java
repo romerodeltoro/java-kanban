@@ -7,16 +7,21 @@ public class Task {
     protected String title;
     protected String description;
     protected int id;
-    static int counter = 1;
-    protected String status;
-    protected final List<String> statusValue = Arrays.asList("NEW", "IN_PROGRESS", "DONE");
+    protected static int counter = 1;
+
+    protected Status status;
+    protected enum Status {
+        NEW, IN_PROGRESS, DONE
+    }
 
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
         this.id = counter++;
-        this.status = this.statusValue.get(0);
+        this.status = Status.NEW;
     }
+    
+    
 
     public String getTitle() {
         return title;
@@ -38,17 +43,19 @@ public class Task {
         return id;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public List<String> getStatusValue() {
+  /*  public List<String> getStatusValue() {
         return statusValue;
     }
+
+   */
 
 
     @Override
