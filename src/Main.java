@@ -1,6 +1,12 @@
+import com.taskmanager.Manager;
+
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Поехали!");
+
+       Manager manager = new Manager();
+
+       manager.printTest();
+
     }
 }
