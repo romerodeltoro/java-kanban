@@ -14,7 +14,7 @@ public class Epic extends Task{
         return subtasks;
     }
 
-    public void setEpicManager(Integer id, Subtask subtask) {
+    public void addSubtask(Integer id, Subtask subtask) {
         this.subtasks.put(id, subtask);
     }
 
@@ -25,7 +25,7 @@ public class Epic extends Task{
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status='" + status + '\'' +
-                ", epicManager=\n\t" + subtasks +
+                ", subtasks=\n\t" + subtasks +
                 '}';
     }
 }
