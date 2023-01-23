@@ -2,7 +2,7 @@ package com.taskmanager;
 
 import java.util.HashMap;
 
-public class Epic extends Task{
+public class Epic extends Task {
 
     protected HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
@@ -23,7 +23,7 @@ public class Epic extends Task{
         return "Epic{" +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", id=" + id +
+                ", id='" + id + '\'' +
                 ", status='" + status + '\'' +
                 ", subtasks=\n\t" + subtasks +
                 '}';

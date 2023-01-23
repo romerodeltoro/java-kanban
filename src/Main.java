@@ -7,7 +7,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-       printTest();
+        printTest();
+
     }
 
     // Тест
@@ -15,22 +16,22 @@ public class Main {
 
         Manager manager = new Manager();
 
-        manager.makeTask(new Task("Задача 1", "описание"));
-        manager.makeTask(new Task("Задача 2", "описание"));
-        manager.makeEpic(new Epic("Эпик 1", "описание"));
-        manager.makeSubtask(new Subtask("Подзадача 1", "описание", 3));
-        manager.makeSubtask(new Subtask("Подзадача 2", "описание", 3));
+        manager.createTask(new Task("Задача 1", "описание"));
+        manager.createTask(new Task("Задача 2", "описание"));
+        manager.createEpic(new Epic("Эпик 1", "описание"));
+        manager.createSubtask(new Subtask("Подзадача 1", "описание", 3));
+        manager.createSubtask(new Subtask("Подзадача 2", "описание", 3));
 
-        manager.makeEpic(new Epic("Эпик 2", "описание"));
-        manager.makeSubtask(new Subtask("Подзадача 3", "описание", 6));
+        manager.createEpic(new Epic("Эпик 2", "описание"));
+        manager.createSubtask(new Subtask("Подзадача 3", "описание", 6));
 
         manager.printTasksList();
         System.out.println("****************\n");
 
 
-        manager.updateTaskStatus(manager.tasks.get(2));
-        manager.updateSubtask(manager.subtasks.get(4));
-        manager.updateSubtask(manager.subtasks.get(7));
+        manager.updateTask(2, new Task("Задача 3",  "описание"));
+        manager.updateSubtask(4, manager.subtasks.get(4));
+        manager.updateSubtask(7, manager.subtasks.get(7));
 
         manager.printTasksList();
         System.out.println("****************\n");

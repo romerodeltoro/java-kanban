@@ -1,15 +1,12 @@
 package com.taskmanager;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Task {
     protected String title;
     protected String description;
     protected int id;
     protected static int counter = 1;
-
     protected Status status;
+
     protected enum Status {
         NEW, IN_PROGRESS, DONE
     }
@@ -20,8 +17,6 @@ public class Task {
         this.id = counter++;
         this.status = Status.NEW;
     }
-    
-    
 
     public String getTitle() {
         return title;
@@ -50,13 +45,6 @@ public class Task {
     public void setStatus(Status status) {
         this.status = status;
     }
-
-  /*  public List<String> getStatusValue() {
-        return statusValue;
-    }
-
-   */
-
 
     @Override
     public String toString() {
