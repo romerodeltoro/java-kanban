@@ -1,7 +1,5 @@
-import com.taskmanager.Epic;
-import com.taskmanager.Manager;
-import com.taskmanager.Subtask;
-import com.taskmanager.Task;
+import com.taskmanager.*;
+import com.taskmanager.tasks.*;
 
 public class Main {
 
@@ -14,7 +12,7 @@ public class Main {
     // Тест
     static void printTest() {
 
-        Manager manager = new Manager();
+        TaskManager manager = Managers.getDefault();
 
         manager.createTask(new Task("Задача 1", "описание"));
         manager.createTask(new Task("Задача 2", "описание"));
@@ -25,20 +23,30 @@ public class Main {
         manager.createEpic(new Epic("Эпик 2", "описание"));
         manager.createSubtask(new Subtask("Подзадача 3", "описание", 6));
 
-        manager.printTasksList();
-        System.out.println("****************\n");
+        manager.getTask(1);
+        manager.getTask(2);
+        manager.getEpic(3);
+        manager.getSubtask(4);
+        manager.getSubtask(5);
+        manager.getEpic(6);
+        manager.getSubtask(7);
+        manager.getTask(1);
+        manager.getTask(2);
+        manager.getEpic(3);
 
+        for (Task task : manager.history()) {
+            System.out.println(task);
+        }
+        System.out.println();
 
-        manager.updateTask(2, new Task("Задача 3",  "описание"));
-        manager.updateSubtask(4, manager.subtasks.get(4));
-        manager.updateSubtask(7, manager.subtasks.get(7));
+        manager.getSubtask(4);
+        manager.getSubtask(5);
+        manager.getEpic(6);
+        manager.getSubtask(7);
 
-        manager.printTasksList();
-        System.out.println("****************\n");
+        for (Task task : manager.history()) {
+            System.out.println(task);
+        }
 
-        manager.deleteTask(2);
-        manager.deleteEpic(6);
-
-        manager.printTasksList();
     }
 }

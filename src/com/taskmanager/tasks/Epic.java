@@ -1,4 +1,4 @@
-package com.taskmanager;
+package com.taskmanager.tasks;
 
 import java.util.HashMap;
 

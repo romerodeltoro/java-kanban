@@ -1,4 +1,4 @@
-package com.taskmanager;
+package com.taskmanager.tasks;
 
 public class Task {
     protected String title;
@@ -7,7 +7,7 @@ public class Task {
     protected static int counter = 1;
     protected Status status;
 
-    protected enum Status {
+    public enum Status {
         NEW, IN_PROGRESS, DONE
     }
 

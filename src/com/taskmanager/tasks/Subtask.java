@@ -1,4 +1,4 @@
-package com.taskmanager;
+package com.taskmanager.tasks;
 
 public class Subtask extends Task{
 
