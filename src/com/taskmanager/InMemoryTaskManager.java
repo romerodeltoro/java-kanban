@@ -8,10 +8,10 @@ import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager{
 
-    public HashMap<Integer, Task> tasks = new HashMap<>();
-    public HashMap<Integer, Epic> epics = new HashMap<>();
-    public HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    HistoryManager historyManager = Managers.getDefaultHistory();
+    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
+    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private HistoryManager historyManager = Managers.getDefaultHistory();
 
 
     // Получение списка задач
@@ -200,8 +200,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
-    @Override
-    public List<Task> history() {
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 

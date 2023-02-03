@@ -67,7 +67,7 @@ public interface TaskManager{
     // Получение списка подзадач
     void printEpicSubtask(Epic epic);
 
-    List<Task> history();
+    List<Task> getHistory();
 
     void printTasksList();
 
