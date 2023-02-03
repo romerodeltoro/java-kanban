@@ -22,7 +22,7 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     // История просмотров задач
     @Override
-    public List<Task> getHistory() {
+    public LinkedList<Task> getHistory() {
         return history;
     }
 
