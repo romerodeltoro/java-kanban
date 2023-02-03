@@ -34,7 +34,7 @@ public class Main {
         manager.getTask(2);
         manager.getEpic(3);
 
-        for (Task task : manager.history()) {
+        for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
         System.out.println();
@@ -44,7 +44,7 @@ public class Main {
         manager.getEpic(6);
         manager.getSubtask(7);
 
-        for (Task task : manager.history()) {
+        for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
 
