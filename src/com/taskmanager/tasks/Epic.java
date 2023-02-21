@@ -22,10 +22,10 @@ public class Epic extends Task {
     public String toString() {
         return "Epic{" +
                 ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
+        //        ", description='" + description + '\'' +
                 ", id='" + id + '\'' +
-                ", status='" + status + '\'' +
-                ", subtasks=\n\t" + subtasks +
+        //        ", status='" + status + '\'' +
+        //        ", subtasks=\n\t" + subtasks +
                 '}';
     }
 }

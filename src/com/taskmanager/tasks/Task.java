@@ -50,8 +50,8 @@ public class Task {
     public String toString() {
         return "Task{" +
                 "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
+        //        ", description='" + description + '\'' +
+        //        ", status='" + status + '\'' +
                 ", id='" + id + '\'' +
                 '}';
     }

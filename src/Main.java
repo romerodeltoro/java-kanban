@@ -26,23 +26,11 @@ public class Main {
         manager.getTask(1);
         manager.getTask(2);
         manager.getEpic(3);
-        manager.getSubtask(4);
-        manager.getSubtask(5);
-        manager.getEpic(6);
-        manager.getSubtask(7);
-        manager.getTask(1);
         manager.getTask(2);
         manager.getEpic(3);
-
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
-        System.out.println();
-
-        manager.getSubtask(4);
-        manager.getSubtask(5);
-        manager.getEpic(6);
-        manager.getSubtask(7);
+        manager.getEpic(3);
+        manager.getTask(2);
+        manager.getTask(1);
 
         for (Task task : manager.getHistory()) {
             System.out.println(task);
