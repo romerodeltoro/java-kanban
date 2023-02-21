@@ -6,7 +6,7 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager{
 
-    private LinkedList<Task> history = new LinkedList<>();
+    private List<Task> history = new ArrayList<>();
 
     private Node<Task> head;
     private Node<Task> tail;
@@ -25,18 +25,32 @@ public class InMemoryHistoryManager implements HistoryManager{
         history.add(task);
     }
 
-    public List<Task> getTasks() {
-        List<Task> actualHistory = new ArrayList<>();
+    public void getTasks() {
 
-        return null;
     }
 
     public void remove (int id) {
+        if (requiredTasks.containsKey(id)) {
+            removeNode(requiredTasks.get(id));
+            history.remove(requiredTasks.get(id).data);
+            requiredTasks.remove(id);
 
+        } else {
+            System.out.println("Задачи с таким ID не было в истории.\n");
+        }
     }
 
     public void removeNode(Node node) {
-
+        if (node.prev == null) {
+            node.next.prev = null;
+            head = node.next;
+        } else if (node.next == null) {
+            node.prev.next = null;
+            tail = node.prev;
+        } else {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        }
     }
 
     // Добавление элемента в список просмотров
@@ -66,7 +80,7 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     // История просмотров задач
     @Override
-    public LinkedList<Task> getHistory() {
+    public List<Task> getHistory() {
         return history;
     }
 
