@@ -4,6 +4,7 @@ import com.taskmanager.tasks.*;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager{
@@ -171,14 +172,16 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public void deleteEpic(int id) {
         if (epics.containsKey(id)) {
-            for (Subtask subtask : subtasks.values()) {
+            Iterator<Subtask> iterator = subtasks.values().iterator();
+            while(iterator.hasNext()) {
+                Subtask subtask = iterator.next();
                 if (subtask.getEpicId() == id) {
-                    subtasks.remove(subtask.getId());
-//                    historyManager.remove(subtask.getId());
+                    iterator.remove();
+                    historyManager.remove(subtask.getId());
                 }
             }
             epics.remove(id);
-//            historyManager.remove(id);
+            historyManager.remove(id);
         } else {
             System.out.println("Задачи с таким ID нет в базе.\n");
         }

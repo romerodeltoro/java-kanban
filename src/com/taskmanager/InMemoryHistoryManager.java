@@ -4,16 +4,14 @@ import com.taskmanager.tasks.Task;
 
 import java.util.*;
 
-public class InMemoryHistoryManager implements HistoryManager{
-
-    private List<Task> history = new ArrayList<>();
+public class InMemoryHistoryManager implements HistoryManager {
 
     private Node<Task> head;
     private Node<Task> tail;
     private Map<Integer, Node> requiredTasks = new HashMap<>();
 
 
-    public void linkLast (Task task) {
+    public void linkLast(Task task) {
         final Node<Task> oldTail = tail;
         final Node<Task> newNode = new Node<>(oldTail, task, null);
         tail = newNode;
@@ -22,17 +20,27 @@ public class InMemoryHistoryManager implements HistoryManager{
         else
             oldTail.next = newNode;
         requiredTasks.put(task.getId(), newNode);
-        history.add(task);
-    }
-
-    public void getTasks() {
 
     }
 
-    public void remove (int id) {
+    public List<Task> getTasks() {
+        List<Task> temporalHistory = new ArrayList<>();
+        Node<Task> node = head;
+        while (true) {
+            temporalHistory.add(node.data);
+            if (node.next == null) {
+                break;
+            }
+            node = node.next;
+        }
+        return temporalHistory;
+    }
+
+    @Override
+    public void remove(int id) {
         if (requiredTasks.containsKey(id)) {
             removeNode(requiredTasks.get(id));
-            history.remove(requiredTasks.get(id).data);
+
             requiredTasks.remove(id);
 
         } else {
@@ -62,17 +70,14 @@ public class InMemoryHistoryManager implements HistoryManager{
             if (requiredTasks.get(task.getId()).prev == null) {
                 requiredTasks.get(task.getId()).next.prev = null;
                 head = requiredTasks.get(task.getId()).next;
-                history.remove(task);
                 linkLast(task);
             } else if (requiredTasks.get(task.getId()).next == null) {
                 requiredTasks.get(task.getId()).prev.next = null;
                 tail = requiredTasks.get(task.getId()).prev;
-                history.remove(task);
                 linkLast(task);
             } else {
                 requiredTasks.get(task.getId()).prev.next = requiredTasks.get(task.getId()).next;
                 requiredTasks.get(task.getId()).next.prev = requiredTasks.get(task.getId()).prev;
-                history.remove(task);
                 linkLast(task);
             }
         }
@@ -81,7 +86,7 @@ public class InMemoryHistoryManager implements HistoryManager{
     // История просмотров задач
     @Override
     public List<Task> getHistory() {
-        return history;
+        return getTasks();
     }
 
     private static class Node<T> {
@@ -93,6 +98,21 @@ public class InMemoryHistoryManager implements HistoryManager{
             this.data = data;
             this.next = next;
             this.prev = prev;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Node<?> node = (Node<?>) o;
+            return Objects.equals(data, node.data)
+                    && Objects.equals(next, node.next)
+                    && Objects.equals(prev, node.prev);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(data, next, prev);
         }
 
         @Override
