@@ -11,43 +11,45 @@ public class InMemoryHistoryManager implements HistoryManager {
     private Map<Integer, Node> requiredTasks = new HashMap<>();
 
 
+    // Добавление элемента в конец связанного списка
     public void linkLast(Task task) {
         final Node<Task> oldTail = tail;
         final Node<Task> newNode = new Node<>(oldTail, task, null);
         tail = newNode;
-        if (oldTail == null)
+        if (oldTail == null) {
             head = newNode;
-        else
+        } else {
             oldTail.next = newNode;
+        }
         requiredTasks.put(task.getId(), newNode);
-
     }
 
+    // Создание обычного списка просмотров
     public List<Task> getTasks() {
         List<Task> temporalHistory = new ArrayList<>();
-        Node<Task> node = head;
+        Node<Task> node = tail;
         while (true) {
             temporalHistory.add(node.data);
-            if (node.next == null) {
+            if (node.prev == null) {
                 break;
             }
-            node = node.next;
+            node = node.prev;
         }
         return temporalHistory;
     }
 
+    // Удаление элемента из мапы и связанного списка
     @Override
     public void remove(int id) {
         if (requiredTasks.containsKey(id)) {
             removeNode(requiredTasks.get(id));
-
             requiredTasks.remove(id);
-
         } else {
             System.out.println("Задачи с таким ID не было в истории.\n");
         }
     }
 
+    // Удаление элемента из связанного списка
     public void removeNode(Node node) {
         if (node.prev == null) {
             node.next.prev = null;
@@ -61,7 +63,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    // Добавление элемента в список просмотров
+    // Добавление элемента в связанный список и мапу
     @Override
     public void add(Task task) {
         if (!requiredTasks.containsKey(task.getId())) {
@@ -83,7 +85,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    // История просмотров задач
+    // Получение истории просмотров
     @Override
     public List<Task> getHistory() {
         return getTasks();
