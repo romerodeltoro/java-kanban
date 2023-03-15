@@ -1,5 +1,6 @@
-package com.taskmanager;
+package com.taskmanager.history;
 
+import com.taskmanager.history.HistoryManager;
 import com.taskmanager.tasks.Task;
 
 import java.util.*;
@@ -28,11 +29,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     public List<Task> getTasks() {
         List<Task> temporalHistory = new ArrayList<>();
         Node<Task> node = tail;
-        while (true) {
+        while (node != null) {
             temporalHistory.add(node.data);
-            if (node.prev == null) {
-                break;
-            }
             node = node.prev;
         }
         return temporalHistory;

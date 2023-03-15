@@ -1,4 +1,4 @@
-package com.taskmanager;
+package com.taskmanager.history;
 
 import java.util.List;
 import com.taskmanager.tasks.*;

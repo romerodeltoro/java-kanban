@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 public class Epic extends Task {
 
+    protected TaskType type = TaskType.EPIC;
+
     protected HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     public Epic(String title, String description) {
@@ -20,12 +22,6 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
-                "title='" + title + '\'' +
-        //        ", description='" + description + '\'' +
-                ", id='" + id + '\'' +
-        //        ", status='" + status + '\'' +
-        //        ", subtasks=\n\t" + subtasks +
-                '}';
+        return String.format("%d,%s,%s,%s,%s,\n", getId(), type, getTitle(), getStatus(), getDescription());
     }
 }

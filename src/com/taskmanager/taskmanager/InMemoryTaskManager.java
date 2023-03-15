@@ -1,5 +1,7 @@
-package com.taskmanager;
+package com.taskmanager.taskmanager;
 
+import com.taskmanager.Managers;
+import com.taskmanager.history.HistoryManager;
 import com.taskmanager.tasks.*;
 
 import java.util.Collection;
@@ -12,7 +14,11 @@ public class InMemoryTaskManager implements TaskManager{
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private HistoryManager historyManager = Managers.getDefaultHistory();
+    protected HistoryManager historyManager = Managers.getDefaultHistory();
+
+   public HistoryManager getHistoryManager() {
+        return this.historyManager;
+    }
 
 
     // Получение списка задач
@@ -53,45 +59,45 @@ public class InMemoryTaskManager implements TaskManager{
 
     // Получение таска
     @Override
-    public Task getTask(int id) {
+    public void getTask(int id) {
         if (tasks.containsKey(id)) {
             historyManager.add(tasks.get(id));
-            return tasks.get(id);
+
         } else {
             System.out.println("Задачи с таким ID нет в базе.");
-            return null;
+
         }
     }
 
     // Получение эпика по ID
     @Override
-    public Epic getEpic(int id) {
+    public void getEpic(int id) {
         if (epics.containsKey(id)) {
             historyManager.add(epics.get(id));
-            return epics.get(id);
+
         } else {
             System.out.println("Задачи с таким ID нет в базе.");
-            return null;
+
         }
     }
 
     // Получение подзадачи по ID
     @Override
-    public Subtask getSubtask(int id) {
+    public void getSubtask(int id) {
         if (subtasks.containsKey(id)) {
             historyManager.add(subtasks.get(id));
-            return subtasks.get(id);
+
         } else {
             System.out.println("Задачи с таким ID нет в базе.");
-            return null;
+
         }
     }
 
     // Создание таска
     @Override
-    public Task createTask(Task task) {
+    public void createTask(Task task) {
         tasks.put(task.getId(), task);
-        return task;
+
     }
 
     // Обновление таска
@@ -108,9 +114,9 @@ public class InMemoryTaskManager implements TaskManager{
 
     // Создание Эпика
     @Override
-    public Epic createEpic(Epic epic) {
+    public void createEpic(Epic epic) {
         epics.put(epic.getId(), epic);
-        return epic;
+
     }
 
     // Обновление эпика
@@ -122,10 +128,10 @@ public class InMemoryTaskManager implements TaskManager{
 
     // Создание подзадачи
     @Override
-    public Subtask createSubtask(Subtask subtask) {
+    public void createSubtask(Subtask subtask) {
         subtasks.put(subtask.getId(), subtask);
         epics.get(subtask.getEpicId()).addSubtask(subtask.getId(), subtask);
-        return subtask;
+
     }
 
     // Обновление подзадачи

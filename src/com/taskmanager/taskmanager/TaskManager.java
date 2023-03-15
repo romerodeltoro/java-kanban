@@ -1,4 +1,4 @@
-package com.taskmanager;
+package com.taskmanager.taskmanager;
 
 import com.taskmanager.tasks.*;
 
@@ -26,28 +26,28 @@ public interface TaskManager{
     void deleteAllSubtasks();
 
     // Получение таска по ID
-    Task getTask(int id);
+    void getTask(int id);
 
     // Получение эпика по ID
-    Epic getEpic(int id);
+    void getEpic(int id);
 
     // Получение подзадачи по ID
-    Subtask getSubtask(int id);
+    void getSubtask(int id);
 
     // Создание таска
-    Task createTask(Task task);
+    void createTask(Task task);
 
     // Обновление таска
     void updateTask(Integer id, Task task);
 
     // Создание Эпика
-    Epic createEpic(Epic epic);
+    void createEpic(Epic epic);
 
     // Обновление эпика
     void updateEpic(Integer id, Epic epic);
 
     // Создание подзадачи
-    Subtask createSubtask(Subtask subtask);
+    void createSubtask(Subtask subtask);
 
     // Обновление подзадачи
     void updateSubtask(Integer id, Subtask subtask);
