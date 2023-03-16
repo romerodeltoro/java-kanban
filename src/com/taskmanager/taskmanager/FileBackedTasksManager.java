@@ -1,48 +1,49 @@
 package com.taskmanager.taskmanager;
 
-import com.taskmanager.ManagerSaveException;
-import com.taskmanager.history.HistoryManager;
+import com.taskmanager.exceptions.ManagerSaveException;
 import com.taskmanager.tasks.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-    private static File file;
-
-    private HistoryManager historyManager = getHistoryManager();
-
-    private static Map<Integer, Task> restoredTasks = new HashMap<>();
+    private File file;
 
     public FileBackedTasksManager(File file) {
-
         this.file = file;
     }
 
     public static void main(String[] args) {
 
         test();
-
-        FileBackedTasksManager manager = loadFromFile(new File("src/com/taskmanager/resources/saveFile.csv"));
-        manager.createTask(new Task("Task3", "Description"));
     }
 
     public static void test() {
         FileBackedTasksManager manager = new FileBackedTasksManager(new File("src/com/taskmanager/resources/saveFile.csv"));
 
-        manager.createTask(new Task("Task", "Description"));
-        manager.createEpic(new Epic("Эпик 1", "описание"));
-        manager.createSubtask(new Subtask("Подзадача 1", "описание", 2));
-        manager.updateTask(1, new Task("Task", "Description_UPDATE"));
-        manager.createTask(new Task("Task2", "Description"));
+        manager.createTask(new Task("task1", "Купить автомобиль"));
+        manager.createEpic(new Epic("new Epic1", "Новый Эпик"));
+        manager.createSubtask(new Subtask("New Subtask", "Подзадача", 2));
+        manager.createSubtask(new Subtask("New Subtask2", "Подзадача2", 2));
         manager.getTask(1);
-        manager.getTask(5);
         manager.getEpic(2);
         manager.getSubtask(3);
+        System.out.println(manager.getTasks());
+        System.out.println(manager.getEpics());
+        System.out.println(manager.getSubTasks());
+        manager.getHistory().forEach(System.out::print);
+
+        System.out.println("\n\n" + "new" + "\n\n");
+
+        FileBackedTasksManager manager2 = loadFromFile(new File("src/com/taskmanager/resources/saveFile.csv"));
+        System.out.println(manager2.getTasks());
+        System.out.println(manager2.getEpics());
+        System.out.println(manager2.getSubTasks());
+        manager2.getHistory().forEach(System.out::print);
     }
 
     /* Записываем все таски и историю в файл, если его нет - создаем */
@@ -69,26 +70,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 writer.write(subtask.toString());
             }
             writer.newLine();
-            writer.write(historyToString(historyManager));
+            writer.write(CSVTaskConverter.historyToString(historyManager));
 
         } catch (IOException e) {
             throw new ManagerSaveException("Не удалось сохранить в файл", e);
         }
     }
 
-    /* Преобразуем историю в строку */
-    public static String historyToString(HistoryManager manager) {
-
-        StringBuilder builder = new StringBuilder("");
-        try {
-            for (Task task : manager.getHistory()) {
-                builder.append(String.valueOf(task.getId()) + ",");
-            }
-            return builder.toString();
-        } catch (NullPointerException e) {
-            throw new ManagerSaveException("История просмотров пуста");
-        }
-    }
 
     /* Выгрузка всех данных из файла в мапы и историю */
     public static FileBackedTasksManager loadFromFile(File file) {
@@ -101,8 +89,28 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
                 if (line.isBlank()) {
                     line = reader.readLine();
-                    for (Integer number : historyFromString(line)) {
-                        manager.addTaskToHistory(number);
+
+                    for (Integer number : CSVTaskConverter.historyFromString(line)) {
+
+                        if (manager.tasks.containsKey(number)) {
+                            try {
+                                manager.getTask(number);
+                            } catch (NullPointerException e) {
+                                throw new ManagerSaveException("Таска с таким ID нет в в мапе");
+                            }
+                        } else if (manager.epics.containsKey(number)) {
+                            try {
+                                manager.getEpic(number);
+                            } catch (NullPointerException e) {
+                                throw new ManagerSaveException("Эпика с таким ID нет в в мапе");
+                            }
+                        } else if (manager.subtasks.containsKey(number)) {
+                            try {
+                                manager.getSubtask(number);
+                            } catch (NullPointerException e) {
+                                throw new ManagerSaveException("Субтаска с таким ID нет в в мапе");
+                            }
+                        }
                     }
                     break;
                 }
@@ -112,52 +120,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
                 switch (type) {
                     case TASK:
-                        manager.createTask((Task) CSVTaskConverter.fromString(line));
-                        manager.restoredTasks.put(((Task) CSVTaskConverter.fromString(line)).getId(), (Task) CSVTaskConverter.fromString(line));
+                        manager.createTask(CSVTaskConverter.taskFromString(line));
                         break;
                     case EPIC:
-                        manager.createEpic((Epic) CSVTaskConverter.fromString(line));
-                        manager.restoredTasks.put(((Epic) CSVTaskConverter.fromString(line)).getId(), (Epic) CSVTaskConverter.fromString(line));
+                        manager.createEpic(CSVTaskConverter.epicFromString(line));
                         break;
                     case SUBTASK:
-                        manager.createSubtask((Subtask) CSVTaskConverter.fromString(line));
-                        manager.restoredTasks.put(((Subtask) CSVTaskConverter.fromString(line)).getId(), (Subtask) CSVTaskConverter.fromString(line));
+                        manager.createSubtask(CSVTaskConverter.subtaskFromString(line));
                         break;
                     default:
                         break;
                 }
-
             }
-
         } catch (IOException e) {
             throw new ManagerSaveException("Не удалось считать данные из файла", e);
         }
-
         return manager;
     }
-
-    /* Парсинг String-овой истории из файла в List<Integer> */
-    public static List<Integer> historyFromString(String value) {
-        List<Integer> history = new ArrayList<Integer>();
-        for (String number : value.split(",")) {
-            history.add(Integer.parseInt(number));
-        }
-        Collections.reverse(history);
-        return history;
-    }
-
-
-    /* Добавление восстановленных из файла таксов в историю */
-    public void addTaskToHistory(int id) {
-
-        if (restoredTasks.containsKey(id)) {
-            historyManager.add(restoredTasks.get(id));
-        } else {
-            System.out.println("Задачи с таким ID нет в мапе.");
-        }
-        save();
-    }
-
 
     @Override
     public void createTask(Task task) {
