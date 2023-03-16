@@ -1,4 +1,4 @@
-package com.taskmanager;
+package com.taskmanager.exceptions;
 
 import java.io.IOException;
 
