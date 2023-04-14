@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface TaskManager{
 
+    void updateSubtaskStatus(Subtask subtask);
+
     // Получение списка задач
     Collection<Task> getTasks();
 
@@ -26,28 +28,28 @@ public interface TaskManager{
     void deleteAllSubtasks();
 
     // Получение таска по ID
-    void getTask(int id);
+    Task getTask(int id);
 
     // Получение эпика по ID
-    void getEpic(int id);
+    Epic getEpic(int id);
 
     // Получение подзадачи по ID
-    void getSubtask(int id);
+    Subtask getSubtask(int id);
 
     // Создание таска
-    void createTask(Task task);
+    Task createTask(Task task);
 
     // Обновление таска
     void updateTask(Integer id, Task task);
 
     // Создание Эпика
-    void createEpic(Epic epic);
+    Epic createEpic(Epic epic);
 
     // Обновление эпика
     void updateEpic(Integer id, Epic epic);
 
     // Создание подзадачи
-    void createSubtask(Subtask subtask);
+    Subtask createSubtask(Subtask subtask);
 
     // Обновление подзадачи
     void updateSubtask(Integer id, Subtask subtask);

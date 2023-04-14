@@ -1,5 +1,9 @@
 package com.taskmanager.tasks;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+
 public class Task {
     protected String title;
     protected String description;
@@ -7,9 +11,23 @@ public class Task {
     protected static int counter;
     protected Status status;
     protected TaskType type = TaskType.TASK;
+    protected int duration;
+    protected LocalDateTime startTime;
+
+    protected LocalDateTime endTime;
 
     public enum Status {
         NEW, IN_PROGRESS, DONE
+    }
+
+    public Task(String title, String description, int duration, LocalDateTime localDateTime) {
+        this.title = title;
+        this.description = description;
+        this.id = ++counter;
+        this.status = Status.NEW;
+        this.duration = duration;
+        this.startTime = localDateTime;
+        this.endTime = getEndTime();
     }
 
     public Task(String title, String description) {
@@ -19,6 +37,11 @@ public class Task {
         this.status = Status.NEW;
     }
 
+
+
+    public static void setCounter(int c) {
+        counter = c;
+    }
     public String getTitle() {
         return title;
     }
@@ -55,9 +78,54 @@ public class Task {
         return null;
     }
 
+    public TaskType getType() {
+        return type;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime = startTime.plusMinutes(duration);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id && duration == task.duration
+                && title.equals(task.title)
+                && description.equals(task.description)
+                && status == task.status
+                && type == task.type
+                && Objects.equals(startTime, task.startTime)
+                && Objects.equals(endTime, task.endTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, description, id, status);
+    }
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s,\n", getId(), type, getTitle(), getStatus(), getDescription());
+        return String.format("%d,%s,%s,%s,%s,%d,%s,%s\n",
+                id, type, title, status, description, duration,
+                startTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
+                endTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
     }
 }

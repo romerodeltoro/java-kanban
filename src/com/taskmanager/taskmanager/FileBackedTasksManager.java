@@ -7,6 +7,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
@@ -23,15 +24,27 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static void test() {
-        FileBackedTasksManager manager = new FileBackedTasksManager(new File("src/com/taskmanager/resources/saveFile.csv"));
+        FileBackedTasksManager manager = new FileBackedTasksManager(
+                new File("src/com/taskmanager/resources/saveFile.csv"));
 
-        manager.createTask(new Task("task1", "Купить автомобиль"));
+        manager.createTask(new Task("task1", "Купить автомобиль", 10,
+                LocalDateTime.of(2020,2,20,20,20,20)));
         manager.createEpic(new Epic("new Epic1", "Новый Эпик"));
-        manager.createSubtask(new Subtask("New Subtask", "Подзадача", 2));
-        manager.createSubtask(new Subtask("New Subtask2", "Подзадача2", 2));
+        manager.createSubtask(new Subtask("New Subtask", "Подзадача", 2, 30,
+                LocalDateTime.of(2222,2,22,22,22,22)));
+        manager.createSubtask(new Subtask("New Subtask2", "Подзадача2", 2, 50,
+                LocalDateTime.of(2222,2,23,23,23,23)));
+        manager.updateSubtask(3, new Subtask("Subtask", "Подзадача", 2));
+        manager.createEpic(new Epic("new Epic2", "Новый Эпик"));
+        manager.createTask(new Task("newTask1", "Купить автомобиль", 10,
+                LocalDateTime.of(2020,2,20,20,30,20)));
         manager.getTask(1);
         manager.getEpic(2);
         manager.getSubtask(3);
+
+        for (Task prioritizedTask : manager.getPrioritizedTasks()) {
+            System.out.println(prioritizedTask);
+        }
         System.out.println(manager.getTasks());
         System.out.println(manager.getEpics());
         System.out.println(manager.getSubTasks());
@@ -90,27 +103,31 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 if (line.isBlank()) {
                     line = reader.readLine();
 
-                    for (Integer number : CSVTaskConverter.historyFromString(line)) {
+                    try {
+                        for (Integer number : CSVTaskConverter.historyFromString(line)) {
 
-                        if (manager.tasks.containsKey(number)) {
-                            try {
-                                manager.getTask(number);
-                            } catch (NullPointerException e) {
-                                throw new ManagerSaveException("Таска с таким ID нет в в мапе");
-                            }
-                        } else if (manager.epics.containsKey(number)) {
-                            try {
-                                manager.getEpic(number);
-                            } catch (NullPointerException e) {
-                                throw new ManagerSaveException("Эпика с таким ID нет в в мапе");
-                            }
-                        } else if (manager.subtasks.containsKey(number)) {
-                            try {
-                                manager.getSubtask(number);
-                            } catch (NullPointerException e) {
-                                throw new ManagerSaveException("Субтаска с таким ID нет в в мапе");
+                            if (manager.tasks.containsKey(number)) {
+                                try {
+                                    manager.getTask(number);
+                                } catch (NullPointerException e) {
+                                    throw new ManagerSaveException("Таска с таким ID нет в в мапе");
+                                }
+                            } else if (manager.epics.containsKey(number)) {
+                                try {
+                                    manager.getEpic(number);
+                                } catch (NullPointerException e) {
+                                    throw new ManagerSaveException("Эпика с таким ID нет в в мапе");
+                                }
+                            } else if (manager.subtasks.containsKey(number)) {
+                                try {
+                                    manager.getSubtask(number);
+                                } catch (NullPointerException e) {
+                                    throw new ManagerSaveException("Субтаска с таким ID нет в в мапе");
+                                }
                             }
                         }
+                    } catch (RuntimeException e) {
+
                     }
                     break;
                 }
@@ -139,21 +156,24 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void createTask(Task task) {
+    public Task createTask(Task task) {
         super.createTask(task);
         save();
+        return task;
     }
 
     @Override
-    public void createEpic(Epic epic) {
+    public Epic createEpic(Epic epic) {
         super.createEpic(epic);
         save();
+        return epic;
     }
 
     @Override
-    public void createSubtask(Subtask subtask) {
+    public Subtask createSubtask(Subtask subtask) {
         super.createSubtask(subtask);
         save();
+        return subtask;
     }
 
     @Override
@@ -195,22 +215,42 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void getTask(int id) {
+    public Task getTask(int id) {
         super.getTask(id);
         save();
+        return tasks.get(id);
     }
 
     @Override
-    public void getEpic(int id) {
+    public Epic getEpic(int id) {
         super.getEpic(id);
         save();
+        return epics.get(id);
     }
 
     @Override
-    public void getSubtask(int id) {
+    public Subtask getSubtask(int id) {
         super.getSubtask(id);
+        save();
+        return subtasks.get(id);
+    }
+
+    @Override
+    public void deleteAllTasks() {
+        tasks.clear();
         save();
     }
 
+    @Override
+    public void deleteAllEpics() {
+        epics.clear();
+        save();
+    }
+
+    @Override
+    public void deleteAllSubtasks() {
+        subtasks.clear();
+        save();
+    }
 
 }
