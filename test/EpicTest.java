@@ -37,7 +37,7 @@ public class EpicTest extends TaskManagerTest<InMemoryTaskManager>{
         taskManager.createEpic(epic2);
         final Subtask subtask1 = taskManager.createSubtask(subtask1epic2);
         final Subtask subtask2 = taskManager.createSubtask(subtask2epic2);
-        final Epic epic = taskManager.createEpic(epic2);
+        final Epic epic = taskManager.getEpic(epic2.getId());
         taskManager.updateSubtaskStatus(subtask1);
         taskManager.updateSubtaskStatus(subtask1);
         taskManager.updateSubtaskStatus(subtask2);
@@ -51,7 +51,7 @@ public class EpicTest extends TaskManagerTest<InMemoryTaskManager>{
         taskManager.createEpic(epic2);
         final Subtask subtask1 = taskManager.createSubtask(subtask1epic2);
         final Subtask subtask2 = taskManager.createSubtask(subtask2epic2);
-        final Epic epic = taskManager.createEpic(epic2);
+        final Epic epic = taskManager.getEpic(epic2.getId());
         taskManager.updateSubtaskStatus(subtask1);
         taskManager.updateSubtaskStatus(subtask1);
 
@@ -63,7 +63,7 @@ public class EpicTest extends TaskManagerTest<InMemoryTaskManager>{
         taskManager.createEpic(epic2);
         final Subtask subtask1 = taskManager.createSubtask(subtask1epic2);
         final Subtask subtask2 = taskManager.createSubtask(subtask2epic2);
-        final Epic epic = taskManager.createEpic(epic2);
+        final Epic epic = taskManager.getEpic(epic2.getId());
         taskManager.updateSubtaskStatus(subtask1);
         taskManager.updateSubtaskStatus(subtask2);
 

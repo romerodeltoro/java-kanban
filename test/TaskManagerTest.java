@@ -12,6 +12,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     protected  T taskManager;
     public Task task1;
     public Task task2;
+    public Task task3;
     public Epic epic1;
     public Epic epic2;
     public Subtask subtask1epic2;
@@ -33,23 +34,17 @@ abstract class TaskManagerTest<T extends TaskManager> {
                 LocalDateTime.of(2222,2,23,23,23,23));
         overlapTask = new Task("Task1", "Description", 30,
                 LocalDateTime.of(2020,2,20,20,30,20));
+        task3 = new Task("Task3", "Description", 30,
+                LocalDateTime.of(2020,2,20,10,20,20));
 
         epic2.addSubtask(subtask1epic2.getId(), subtask1epic2);
         epic2.addSubtask(subtask2epic2.getId(), subtask2epic2);
 
-        /*
-        taskManager.createTask(task1);
-        taskManager.createTask(task2);
-        taskManager.createEpic(epic1);
-        taskManager.createEpic(epic2);
-        taskManager.createSubtask(subtask1epic2);
-        taskManager.createSubtask(subtask2epic2);
-        */
     }
 
     @AfterEach
     public void setNewTaskManager() {
-        Task.setCounter(0); // Не нашел другого способа, чтобы сбосить счетчит id
+        Task.setCounter(0); // Не нашел другого способа, чтобы сбосить счетчик id
     }
 
 }

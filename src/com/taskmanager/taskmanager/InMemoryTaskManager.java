@@ -31,7 +31,7 @@ public class InMemoryTaskManager implements TaskManager{
         return new ArrayList<>(tasksSet);
     }
 
-    public boolean checkIntersection(Task task) {
+    private boolean checkIntersection(Task task) {
         if (getPrioritizedTasks().isEmpty()) {
             return true;
         }

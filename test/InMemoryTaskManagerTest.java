@@ -37,7 +37,17 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
                 }
         );
         assertEquals("¬рем€ выволнени€ задачи пересекаетс€ с уже существующими", e.getMessage());
+    }
 
+    @Test
+    @DisplayName("ѕроверка на пор€док в отсортированном списке")
+    void shouldPrioritizedTasksSorted() {
+        taskManager.createTask(task1);
+        taskManager.createTask(task2);
+        taskManager.createTask(task3);
+        final List<Task> sortedList = List.of(task3, task1, task2);
+
+        assertEquals(sortedList, taskManager.getPrioritizedTasks(), "Ќеверное количество задач.");
     }
 
     @Test
