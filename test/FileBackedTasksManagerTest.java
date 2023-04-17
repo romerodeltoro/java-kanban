@@ -34,12 +34,6 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         taskManager.createSubtask(subtask2epic2);
     }
 
-    @AfterEach
-    public void setNewTaskManager() {
-        super.setNewTaskManager();
-    }
-
-
     @Test
     @DisplayName("Записываем все таски в файл с пустой историей")
     public void shouldSaveIfTasksExist() {

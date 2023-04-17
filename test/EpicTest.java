@@ -17,11 +17,6 @@ public class EpicTest extends TaskManagerTest<InMemoryTaskManager>{
         super.setTaskManager();
     }
 
-    @AfterEach
-    public void setNewTaskManager() {
-        super.setNewTaskManager();
-    }
-
     @Test
     public void shouldEpicStatusNewIfSubtaskListIsClear() {
         assertEquals(NEW, epic1.getStatus(), "Status wrong");

@@ -18,11 +18,6 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         super.setTaskManager();
     }
 
-    @AfterEach
-    public void setNewTaskManager() {
-        super.setNewTaskManager();
-    }
-
     @Test
     @DisplayName("Проверка на пересечение времени")
     void shouldNewTaskOverlapExisting() {

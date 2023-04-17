@@ -15,6 +15,10 @@ public class Subtask extends Task{
 
     }
 
+    public Subtask(String title, String description, int duration, LocalDateTime localDateTime) {
+        super(title, description, duration, localDateTime);
+    }
+
     public Subtask(String title, String description, int epicId) {
         super(title, description);
         this.epicId = epicId;
@@ -22,6 +26,10 @@ public class Subtask extends Task{
 
     public Integer getEpicId() {
         return epicId;
+    }
+
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
     }
 
     @Override

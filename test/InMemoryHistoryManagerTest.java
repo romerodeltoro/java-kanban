@@ -39,10 +39,6 @@ public class InMemoryHistoryManagerTest <T extends HistoryManager>{
         taskManager.createTask(task3);
 
     }
-    @AfterEach
-    public void setNewTaskManager() {
-        Task.setCounter(0);
-    }
 
     @Test
     @DisplayName("Проверка на пустую историю")

@@ -24,6 +24,7 @@ public class Epic extends Task {
 
     public void addSubtask(Integer id, Subtask subtask) {
         this.subtasks.put(id, subtask);
+        subtask.setEpicId(getId());
     }
 
     public void setEpicStartEndTime() {
