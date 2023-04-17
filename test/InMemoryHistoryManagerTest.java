@@ -3,6 +3,7 @@ import com.taskmanager.history.HistoryManager;
 import com.taskmanager.taskmanager.InMemoryTaskManager;
 import com.taskmanager.taskmanager.TaskManager;
 import com.taskmanager.tasks.Task;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,11 @@ public class InMemoryHistoryManagerTest <T extends HistoryManager>{
         taskManager.createTask(task3);
 
     }
+    @AfterEach
+    public void setNewTaskManager() {
+        Task.setCounter(0);
+    }
+
     @Test
     @DisplayName("Проверка на пустую историю")
     public void shouldGetEmptyHistory() {
