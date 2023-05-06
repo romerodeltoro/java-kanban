@@ -1,6 +1,5 @@
 package com.taskmanager.history;
 
-import com.taskmanager.history.HistoryManager;
 import com.taskmanager.tasks.Task;
 
 import java.util.*;

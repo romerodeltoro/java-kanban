@@ -31,7 +31,7 @@ public class Main {
 
         System.out.println("/*******/");
 
-        manager.getTasks().forEach(System.out::println);
+       /* manager.getTasks().forEach(System.out::println);
 
         HttpTaskManager manager2 = new HttpTaskManager();
         manager2.load();
@@ -39,7 +39,7 @@ public class Main {
         manager2.getTasks().forEach(System.out::println);
         manager2.getEpics().forEach(System.out::println);
         manager2.getSubTasks().forEach(System.out::println);
-        manager2.getHistory().forEach(System.out::println);
+        manager2.getHistory().forEach(System.out::println);*/
     }
 
 }

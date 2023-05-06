@@ -6,13 +6,16 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import com.taskmanager.managers.HttpTaskManager;
 import com.taskmanager.managers.Managers;
-import com.taskmanager.taskmanager.TaskManager;
 import com.taskmanager.tasks.Epic;
 import com.taskmanager.tasks.Subtask;
 import com.taskmanager.tasks.Task;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
@@ -37,7 +40,10 @@ public class HttpTaskServer {
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        KVServer server = new KVServer();
+        server.start();
         HttpTaskServer httpTaskServer = new HttpTaskServer((HttpTaskManager) Managers.getDefault());
+        httpTaskServer.start();
         httpTaskServer.taskManager.createTask(new Task("task1", " упить автомобиль", 10,
                 LocalDateTime.of(2020, 2, 20, 20, 20, 20)));
         httpTaskServer.taskManager.createEpic(new Epic("new Epic1", "Ќовый Ёпик"));
@@ -53,7 +59,14 @@ public class HttpTaskServer {
         httpTaskServer.taskManager.getTask(1);
         httpTaskServer.taskManager.getSubtask(3);
 
-        httpTaskServer.start();
+
+
+        HttpClient client = HttpClient.newHttpClient();
+        URI uri = URI.create("http://localhost:8080/tasks/task");
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(uri).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
 
     }
 

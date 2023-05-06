@@ -1,9 +1,7 @@
 package http;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.sun.net.httpserver.HttpServer;
 import com.taskmanager.managers.HttpTaskManager;
 import com.taskmanager.managers.Managers;
 import com.taskmanager.server.HttpTaskServer;
@@ -11,11 +9,13 @@ import com.taskmanager.server.KVServer;
 import com.taskmanager.tasks.Epic;
 import com.taskmanager.tasks.Subtask;
 import com.taskmanager.tasks.Task;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -303,7 +303,6 @@ public class HttpTaskServerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
 
-    //    Task actual = taskManager.getTasks().stream().findFirst().get();
     }
     @Test
     @DisplayName("Обновляем субтаск")
