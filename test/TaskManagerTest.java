@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.time.LocalDateTime;
 
+import static com.taskmanager.tasks.Task.setCounter;
+
 
 abstract class TaskManagerTest<T extends TaskManager> {
 
@@ -40,6 +42,11 @@ abstract class TaskManagerTest<T extends TaskManager> {
         epic2.addSubtask(subtask1epic2.getId(), subtask1epic2);
         epic2.addSubtask(subtask2epic2.getId(), subtask2epic2);
 
+    }
+
+    @AfterEach
+    void resetTaskManager() {
+        setCounter(0);
     }
 
 }

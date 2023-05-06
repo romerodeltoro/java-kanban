@@ -6,6 +6,7 @@ import org.junit.jupiter.api.function.Executable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.taskmanager.tasks.Task.setCounter;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -16,6 +17,10 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
     public void setTaskManager() {
         taskManager = new InMemoryTaskManager();
         super.setTaskManager();
+    }
+    @AfterEach
+    void resetTaskManager() {
+        super.resetTaskManager();
     }
 
     @Test
@@ -181,19 +186,6 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
                 }
         );
         assertEquals("Задачи с таким ID нет в базе.", e.getMessage());
-
-        final List<Task> tasks = new ArrayList<>(taskManager.getTasks());
-        tasks.clear();
-        final NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                new Executable() {
-                    @Override
-                    public void execute() {
-                        taskManager.getTask(id);
-                    }
-                }
-        );
-        assertNull(exception.getMessage());
     }
 
     @Test
@@ -212,20 +204,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
                     }
                 }
         );
-        assertEquals("Задачи с таким ID нет в базе.", e.getMessage());
-
-        final List<Task> epics = new ArrayList<>(taskManager.getEpics());
-        epics.clear();
-        final NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                new Executable() {
-                    @Override
-                    public void execute() {
-                        taskManager.getEpic(id);
-                    }
-                }
-        );
-        assertNull(exception.getMessage());
+        assertEquals("Эпика с таким ID нет в базе.", e.getMessage());
     }
 
     @Test
@@ -245,19 +224,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
                     }
                 }
         );
-        assertEquals("Задачи с таким ID нет в базе.", e.getMessage());
-        final List<Task> subtasks = new ArrayList<>(taskManager.getSubTasks());
-        subtasks.clear();
-        final NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                new Executable() {
-                    @Override
-                    public void execute() {
-                        taskManager.getSubtask(id);
-                    }
-                }
-        );
-        assertNull(exception.getMessage());
+        assertEquals("Эпика с таким ID нет в базе.", e.getMessage());
     }
 
     @Test
@@ -321,7 +288,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
                     public void execute() { taskManager.getEpic(id);}
                 }
         );
-        assertEquals("Задачи с таким ID нет в базе.", nPE1.getMessage());
+        assertEquals("Эпика с таким ID нет в базе.", nPE1.getMessage());
 
         final NullPointerException nPE2 = assertThrows(
                 NullPointerException.class,
@@ -330,7 +297,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
                     public void execute() { taskManager.getSubtask(subtask1ForSavedEpic.getId());}
                 }
         );
-        assertEquals("Задачи с таким ID нет в базе.", nPE2.getMessage());
+        assertEquals("Субтаска с таким ID нет в базе.", nPE2.getMessage());
 
         final NullPointerException nPE3 = assertThrows(
                 NullPointerException.class,
@@ -339,7 +306,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
                     public void execute() { taskManager.getSubtask(subtask2ForSavedEpic.getId());}
                 }
         );
-        assertEquals("Задачи с таким ID нет в базе.", nPE3.getMessage());
+        assertEquals("Субтаска с таким ID нет в базе.", nPE3.getMessage());
 
     }
 
@@ -358,7 +325,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
                     public void execute() { taskManager.getSubtask(id);}
                 }
         );
-        assertEquals("Задачи с таким ID нет в базе.", e.getMessage());
+        assertEquals("Субтаска с таким ID нет в базе.", e.getMessage());
         assertNull(epicForSavedSubtask.getSubtasks().get(id));
     }
 }

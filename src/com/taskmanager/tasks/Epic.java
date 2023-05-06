@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Epic extends Task {
 
     protected TaskType type = TaskType.EPIC;
-    protected LocalDateTime endTime;
+
 
     protected HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
@@ -15,7 +15,9 @@ public class Epic extends Task {
         super(title, description);
         setEpicStartEndTime();
         setEpicDuration();
-
+    }
+    public Epic() {
+        this.id = ++counter;
     }
 
     public HashMap<Integer, Subtask> getSubtasks() {
@@ -25,6 +27,9 @@ public class Epic extends Task {
     public void addSubtask(Integer id, Subtask subtask) {
         this.subtasks.put(id, subtask);
         subtask.setEpicId(getId());
+    }
+    public void deleteSubtasks() {
+        subtasks.clear();
     }
 
     public void setEpicStartEndTime() {

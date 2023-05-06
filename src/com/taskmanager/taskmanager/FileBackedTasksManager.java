@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
@@ -18,46 +19,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    public static void main(String[] args) {
-
-        test();
-    }
-
-    public static void test() {
-        FileBackedTasksManager manager = new FileBackedTasksManager(
-                new File("src/com/taskmanager/resources/saveFile.csv"));
-
-        manager.createTask(new Task("task1", "Купить автомобиль", 10,
-                LocalDateTime.of(2020,2,20,20,20,20)));
-        manager.createEpic(new Epic("new Epic1", "Новый Эпик"));
-        manager.createSubtask(new Subtask("New Subtask", "Подзадача", 2, 30,
-                LocalDateTime.of(2222,2,22,22,22,22)));
-        manager.createSubtask(new Subtask("New Subtask2", "Подзадача2", 2, 50,
-                LocalDateTime.of(2222,2,23,23,23,23)));
-        manager.updateSubtask(3, new Subtask("Subtask", "Подзадача", 2));
-        manager.createEpic(new Epic("new Epic2", "Новый Эпик"));
-        manager.createTask(new Task("newTask1", "Купить автомобиль", 10,
-                LocalDateTime.of(2020,2,20,20,30,20)));
-        manager.getTask(1);
-        manager.getEpic(2);
-        manager.getSubtask(3);
-
-        for (Task prioritizedTask : manager.getPrioritizedTasks()) {
-            System.out.println(prioritizedTask);
-        }
-        System.out.println(manager.getTasks());
-        System.out.println(manager.getEpics());
-        System.out.println(manager.getSubTasks());
-        manager.getHistory().forEach(System.out::print);
-
-        System.out.println("\n\n" + "new" + "\n\n");
-
-        FileBackedTasksManager manager2 = loadFromFile(new File("src/com/taskmanager/resources/saveFile.csv"));
-        System.out.println(manager2.getTasks());
-        System.out.println(manager2.getEpics());
-        System.out.println(manager2.getSubTasks());
-        manager2.getHistory().forEach(System.out::print);
-    }
 
     /* Записываем все таски и историю в файл, если его нет - создаем */
     public void save() {
@@ -249,6 +210,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public void deleteAllSubtasks() {
+        epics.values().stream().map(Epic::getSubtasks).forEach(HashMap::clear);
         subtasks.clear();
         save();
     }

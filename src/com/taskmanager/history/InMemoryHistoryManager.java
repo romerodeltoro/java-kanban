@@ -66,6 +66,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
         if (!requiredTasks.containsKey(task.getId())) {
             linkLast(task);
+        } else if (requiredTasks.get(task.getId()).prev == null && requiredTasks.get(task.getId()).next == null) {
+            head = requiredTasks.get(task.getId());
         } else {
             if (requiredTasks.get(task.getId()).prev == null) {
                 requiredTasks.get(task.getId()).next.prev = null;

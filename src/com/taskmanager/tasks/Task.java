@@ -10,7 +10,7 @@ public class Task {
     protected int id;
     protected static int counter;
     protected Status status;
-    protected TaskType type = TaskType.TASK;
+    protected TaskType taskType = TaskType.TASK;
     protected int duration;
     protected LocalDateTime startTime;
 
@@ -29,11 +29,23 @@ public class Task {
         this.startTime = localDateTime;
         this.endTime = getEndTime();
     }
+    public Task(int id, String title, String description, int duration, LocalDateTime localDateTime) {
+        this.title = title;
+        this.description = description;
+        this.id = id;
+        this.status = Status.NEW;
+        this.duration = duration;
+        this.startTime = localDateTime;
+        this.endTime = getEndTime();
+    }
 
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
         this.id = ++counter;
+        this.status = Status.NEW;
+    }
+    public Task() {
         this.status = Status.NEW;
     }
 
@@ -78,8 +90,8 @@ public class Task {
         return null;
     }
 
-    public TaskType getType() {
-        return type;
+    public TaskType getTaskType() {
+        return taskType;
     }
 
     public int getDuration() {
@@ -111,7 +123,7 @@ public class Task {
                 && title.equals(task.title)
                 && description.equals(task.description)
                 && status == task.status
-                && type == task.type
+                && taskType == task.taskType
                 && Objects.equals(startTime, task.startTime)
                 && Objects.equals(endTime, task.endTime);
     }
@@ -124,7 +136,7 @@ public class Task {
     @Override
     public String toString() {
         return String.format("%d,%s,%s,%s,%s,%d,%s,%s\n",
-                id, type, title, status, description, duration,
+                id, taskType, title, status, description, duration,
                 startTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
                 endTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
     }

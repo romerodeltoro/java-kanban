@@ -67,12 +67,12 @@ public interface TaskManager{
     void deleteSubtask(int id);
 
     // Получение списка подзадач
-    void printEpicSubtask(Epic epic);
+    List<Subtask> getEpicSubtask(int id);
 
     List<Task> getHistory();
 
     void printTasksList();
 
-
+    List<Task> getPrioritizedTasks();
 
 }

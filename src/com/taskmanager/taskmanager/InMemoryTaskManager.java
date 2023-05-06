@@ -1,12 +1,12 @@
 package com.taskmanager.taskmanager;
 
-import com.taskmanager.Managers;
+import com.taskmanager.managers.Managers;
 import com.taskmanager.history.HistoryManager;
 import com.taskmanager.tasks.*;
 
 import java.util.*;
 
-public class InMemoryTaskManager implements TaskManager{
+public class InMemoryTaskManager implements TaskManager {
 
     protected HashMap<Integer, Task> tasks = new HashMap<>();
     protected HashMap<Integer, Epic> epics = new HashMap<>();
@@ -27,6 +27,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
+    @Override
     public List<Task> getPrioritizedTasks() {
         return new ArrayList<>(tasksSet);
     }
@@ -83,6 +84,7 @@ public class InMemoryTaskManager implements TaskManager{
     // Удалить все подзадачи
     @Override
     public void deleteAllSubtasks() {
+        epics.values().stream().map(Epic::getSubtasks).forEach(HashMap::clear);
         subtasks.clear();
     }
 
@@ -104,7 +106,7 @@ public class InMemoryTaskManager implements TaskManager{
             historyManager.add(epics.get(id));
             return epics.get(id);
         } else {
-            throw new NullPointerException("Задачи с таким ID нет в базе.");
+            throw new NullPointerException("Эпика с таким ID нет в базе.");
 
         }
     }
@@ -116,7 +118,7 @@ public class InMemoryTaskManager implements TaskManager{
             historyManager.add(subtasks.get(id));
             return subtasks.get(id);
         } else {
-            throw new NullPointerException("Задачи с таким ID нет в базе.");
+            throw new NullPointerException("Субтаска с таким ID нет в базе.");
         }
     }
 
@@ -225,7 +227,7 @@ public class InMemoryTaskManager implements TaskManager{
     public void deleteEpic(int id) {
         if (epics.containsKey(id)) {
             Iterator<Subtask> iterator = subtasks.values().iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 Subtask subtask = iterator.next();
                 if (subtask.getEpicId() == id) {
                     iterator.remove();
@@ -255,8 +257,18 @@ public class InMemoryTaskManager implements TaskManager{
 
     // Получение списка подзадач
     @Override
-    public void printEpicSubtask(Epic epic) {
-        epic.getSubtasks().values().forEach(System.out::println);
+    public List<Subtask> getEpicSubtask(int id) {
+        if (epics.containsKey(id)) {
+            try {
+                List<Subtask> epicSubtasks = new ArrayList<>(epics.get(id).getSubtasks().values());
+                return epicSubtasks;
+            } catch (NullPointerException e) {
+                System.out.println("У эпика с id: " + id + " нет субтасков");
+            }
+        } else {
+            System.out.println("Эпика с id: " + id + " нет в списке");
+        }
+       return null;
     }
 
     public List<Task> getHistory() {
@@ -265,7 +277,7 @@ public class InMemoryTaskManager implements TaskManager{
 
     // Напечатать список всех тасков
     @Override
-    public  void printTasksList() {
+    public void printTasksList() {
         tasks.values().forEach(System.out::println);
         epics.values().forEach(System.out::println);
         subtasks.values().forEach(System.out::println);

@@ -1,7 +1,6 @@
-import com.taskmanager.Managers;
+import com.taskmanager.managers.Managers;
 import com.taskmanager.history.HistoryManager;
 import com.taskmanager.taskmanager.InMemoryTaskManager;
-import com.taskmanager.taskmanager.TaskManager;
 import com.taskmanager.tasks.Task;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,9 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import static com.taskmanager.tasks.Task.setCounter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -38,6 +37,10 @@ public class InMemoryHistoryManagerTest <T extends HistoryManager>{
         taskManager.createTask(task2);
         taskManager.createTask(task3);
 
+    }
+    @AfterEach
+    void resetTaskManager() {
+        setCounter(0);
     }
 
     @Test
